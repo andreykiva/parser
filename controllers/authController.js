@@ -8,7 +8,7 @@ const Role = require("../models/Role");
 const generateAccessToken = (id, roles) => {
 	const payload = { id, roles };
 
-	return jwt.sign(payload, rocess.env.SECRET, { expiresIn: "24h" });
+	return jwt.sign(payload, process.env.SECRET, { expiresIn: "24h" });
 };
 
 class AuthController {
@@ -90,7 +90,7 @@ class AuthController {
 	getRoles(req, res) {
 		const token = req.headers.authorization.split(" ")[1];
 
-		const { roles } = jwt.verify(token, rocess.env.SECRET);
+		const { roles } = jwt.verify(token, process.env.SECRET);
 
 		return res.json({ roles });
 	}
