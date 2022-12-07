@@ -7,7 +7,6 @@ const cron = require("node-cron");
 const app = express();
 const parseRouter = require("./routes/parseRouter");
 const authRouter = require("./routes/authRouter");
-const { mongoURI } = require("./config");
 
 const PORT = process.env.PORT || 8888;
 
@@ -36,7 +35,7 @@ cron.schedule("59 59 23 * * *", () => {
 
 const start = () => {
 	try {
-		mongoose.connect(mongoURI, {
+		mongoose.connect(process.env.MONGO_URI, {
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
 		});
