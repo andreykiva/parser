@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const { startProm, startOlx } = require("../utils/parse");
 const { saveProducts } = require("../utils/exel");
 
@@ -8,10 +9,12 @@ class parseController {
 			const { title, promPages, olxPages, username, prom, olx } = req.body;
 			let products = [];
 
-			const files = fs.readdirSync("./logs");
+			const files = fs.readdirSync(path.join(__dirname, "..", "/logs"));
+
+			console.log(files[0]);
 
 			fs.appendFileSync(
-				`./logs/${files[0]}`,
+				path.join(__dirname, "..", "/logs", files[0]),
 				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
 			);
 
