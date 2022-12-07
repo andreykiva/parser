@@ -13,7 +13,7 @@ class parseController {
 			files.forEach((file) => {
 				if (file.includes("logs")) {
 					fs.appendFileSync(
-						`/tmp/${files[0]}`,
+						`/tmp/${file}`,
 						`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
 					);
 				}

@@ -104,7 +104,8 @@ class AuthController {
 				.toLocaleString()
 				.replace(", ", "_")
 				.replace(/\./g, "_")
-				.replace(/\:/g, "_") +
+				.replace(/\:/g, "_")
+				.replace(/\ /g, "_") +
 			".txt";
 
 		filenames.forEach((file) => {

@@ -3,7 +3,7 @@ const reader = require("xlsx");
 
 const saveProducts = (products, title) => {
 	const ws = reader.utils.json_to_sheet(products);
-	const newFilename = title.replace(/ /g, '_') + "_" + new Date().toLocaleString().slice(-8).replace(/\:/g, "_") + ".xlsx";
+	const newFilename = title.replace(/ /g, '_') + "_" + new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") + ".xlsx";
 
 	fs.writeFileSync(`/tmp/${newFilename}`, "");
 
