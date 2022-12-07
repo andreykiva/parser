@@ -10,7 +10,9 @@ const authRouter = require("./routes/authRouter");
 
 const PORT = process.env.PORT || 8888;
 
-app.use("/", express.static(path.join(__dirname)));
+app.use("/logs", express.static(path.join(__dirname, "/logs")));
+app.use("/tmp", express.static(path.join(__dirname, "/tmp")));
+app.use(express.static(__dirname + '/'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,7 +22,7 @@ app.use("/api", parseRouter);
 app.use("/api/auth", authRouter);
 
 cron.schedule("59 59 23 * * *", () => {
-	const directory = "./tmp";
+	const directory = path.join(__dirname, "/tmp");
 
 	fs.readdir(directory, (err, files) => {
 		if (err) throw err;
