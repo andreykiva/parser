@@ -8,10 +8,13 @@ const saveProducts = (products, title) => {
 
 	const files = fs.readdirSync(path.join(__dirname, "..", "/tmp"));
 
-	console.log("I'm hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+	console.log("NEW V2 - 1");
 	console.log(files);
 
-	// fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
+	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
+
+	console.log("NEW V2 - 2");
+	console.log(files);
 
 	// const file = reader.readFile(path.join(__dirname, "..", "/tmp", newFilename));
 
