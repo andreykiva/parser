@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
@@ -93,6 +94,28 @@ class AuthController {
 		const { roles } = jwt.verify(token, process.env.SECRET);
 
 		return res.json({ roles });
+	}
+
+	getLogs(req, res) {
+		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
+
+		const newFilename =
+			"logs_" +
+			new Date()
+				.toLocaleString()
+				.replace(", ", "_")
+				.replace(/\./g, "_")
+				.replace(/\:/g, "_")
+				.replace(/\ /g, "_") +
+			".txt";
+
+		fs.rename(
+			path.join(__dirname, "..", "/logs", filenames[0]),
+			path.join(__dirname, "..", "/logs", newFilename),
+			() => {
+				return res.status(200).json({ filename: newFilename });
+			}
+		);
 	}
 }
 
