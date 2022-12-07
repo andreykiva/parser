@@ -6,11 +6,11 @@ const saveProducts = (products, title) => {
 	const ws = reader.utils.json_to_sheet(products);
 	const newFilename = title.replace(/ /g, '_') + "_" + new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") + ".xlsx";
 
-	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
-
 	const files = fs.readdirSync(path.join(__dirname, "..", "/tmp"));
 
 	console.log(files);
+
+	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
 
 	const file = reader.readFile(path.join(__dirname, "..", "/tmp", newFilename));
 
