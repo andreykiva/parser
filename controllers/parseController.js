@@ -8,12 +8,16 @@ class parseController {
 			const { title, promPages, olxPages, username, prom, olx } = req.body;
 			let products = [];
 
-			const files = fs.readdirSync("./tmp/logs");
+			const files = fs.readdirSync("/tmp");
 
-			fs.appendFileSync(
-				`./tmp/logs/${files[0]}`,
-				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
-			);
+			files.forEach((file) => {
+				if (file.includes("logs")) {
+					fs.appendFileSync(
+						`/tmp/${files[0]}`,
+						`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
+					);
+				}
+			});
 
 			if (prom && olx) {
 				const listOfPromises = [];

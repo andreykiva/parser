@@ -96,7 +96,7 @@ class AuthController {
 	}
 
 	getLogs(req, res) {
-		const filenames = fs.readdirSync("./tmp/logs");
+		const filenames = fs.readdirSync("/tmp");
 
 		const newFilename =
 			"logs_" +
@@ -107,9 +107,15 @@ class AuthController {
 				.replace(/\:/g, "_") +
 			".txt";
 
-		fs.rename("./tmp/logs/" + filenames[0], "./tmp/logs/" + newFilename, () => {
-			return res.status(200).json({ filename: newFilename})
-		});
+		filenames.forEach((file) => {
+			if (file.includes("logs")) {
+				fs.rename("/tmp/" + file, "/tmp/" + newFilename, () => {
+					return res.status(200).json({ filename: newFilename})
+				});
+			}
+		})
+
+		
 	}
 }
 
