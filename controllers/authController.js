@@ -109,7 +109,7 @@ class AuthController {
 			".txt";
 
 		fs.rename("./logs/" + filenames[0], "./logs/" + newFilename, () => {
-			return res.status(200).json({ filename: newFilename });
+			return res.status(200).json({ filename: newFilename})
 		});
 	}
 }

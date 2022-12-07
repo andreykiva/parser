@@ -39,7 +39,7 @@ class parseController {
 
 			return res.status(200).json({
 				filename,
-				message: "Success",
+				message: "Success"
 			});
 		} catch (e) {
 			console.log(e);
