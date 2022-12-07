@@ -109,6 +109,7 @@ class AuthController {
 			".txt";
 
 		filenames.forEach((file) => {
+			console.log(file);
 			if (file.includes("logs")) {
 				fs.rename("/tmp/" + file, "/tmp/" + newFilename, () => {
 					return res.status(200).json({ filename: newFilename})
