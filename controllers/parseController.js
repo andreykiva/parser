@@ -8,8 +8,10 @@ class parseController {
 			const { title, promPages, olxPages, username, prom, olx } = req.body;
 			let products = [];
 
+			const files = fs.readdirSync("./mylogs");
+
 			fs.appendFileSync(
-				"./mylogs.txt",
+				`./mylogs/${files[0]}`,
 				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
 			);
 
@@ -39,7 +41,7 @@ class parseController {
 
 			return res.status(200).json({
 				filename,
-				message: "Success"
+				message: "Success",
 			});
 		} catch (e) {
 			console.log(e);
