@@ -11,11 +11,12 @@ class parseController {
 
 			const files = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 
-			console.log(files[0]);
+			const today = new Date();
+			today.setHours(today.getHours() + 2);	
 
 			fs.appendFileSync(
 				path.join(__dirname, "..", "/logs", files[0]),
-				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
+				`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
 			);
 
 			if (prom && olx) {
