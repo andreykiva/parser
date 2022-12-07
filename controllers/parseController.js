@@ -9,7 +9,7 @@ class parseController {
 			let products = [];
 
 			fs.appendFileSync(
-				"./logs.txt",
+				"./mylogs.txt",
 				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
 			);
 

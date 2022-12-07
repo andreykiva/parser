@@ -96,10 +96,10 @@ class AuthController {
 	}
 
 	getLogs(req, res) {
-		const filenames = fs.readdirSync("./logs");
+		const filenames = fs.readdirSync("./mylogs");
 
 		const newFilename =
-			"logs_" +
+			"mylogs_" +
 			new Date()
 				.toLocaleString()
 				.replace(", ", "_")
@@ -107,7 +107,7 @@ class AuthController {
 				.replace(/\:/g, "_") +
 			".txt";
 
-		fs.rename("./logs/" + filenames[0], "./logs/" + newFilename, () => {
+		fs.rename("./mylogs/" + filenames[0], "./mylogs/" + newFilename, () => {
 			return res.status(200).json({ filename: newFilename})
 		});
 	}
