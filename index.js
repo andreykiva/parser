@@ -20,7 +20,7 @@ app.use("/api", parseRouter);
 app.use("/api/auth", authRouter);
 
 cron.schedule("59 59 23 * * *", () => {
-	const directory = "./data";
+	const directory = "./tmp/data";
 
 	fs.readdir(directory, (err, files) => {
 		if (err) throw err;

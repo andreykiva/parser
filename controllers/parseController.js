@@ -8,10 +8,10 @@ class parseController {
 			const { title, promPages, olxPages, username, prom, olx } = req.body;
 			let products = [];
 
-			const files = fs.readdirSync("./mylogs");
+			const files = fs.readdirSync("./tmp/logs");
 
 			fs.appendFileSync(
-				`./mylogs/${files[0]}`,
+				`./tmp/logs/${files[0]}`,
 				`Користувач ${username} зробив пошук "${title}" | ${new Date().toLocaleString()}\n`
 			);
 
