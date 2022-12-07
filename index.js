@@ -20,17 +20,15 @@ app.use("/api", parseRouter);
 app.use("/api/auth", authRouter);
 
 cron.schedule("59 59 23 * * *", () => {
-	const directory = "/tmp";
+	const directory = "./tmp";
 
 	fs.readdir(directory, (err, files) => {
 		if (err) throw err;
 
 		for (const file of files) {
-			if (!file.includes("logs")) {
-				fs.unlink(path.join(directory, file), (err) => {
-					if (err) throw err;
-				});
-			}
+			fs.unlink(path.join(directory, file), (err) => {
+				if (err) throw err;
+			});
 		}
 	});
 });
