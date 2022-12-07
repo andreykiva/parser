@@ -94,31 +94,6 @@ class AuthController {
 
 		return res.json({ roles });
 	}
-
-	getLogs(req, res) {
-		const filenames = fs.readdirSync("/tmp");
-
-		const newFilename =
-			"logs_" +
-			new Date()
-				.toLocaleString()
-				.replace(", ", "_")
-				.replace(/\./g, "_")
-				.replace(/\:/g, "_")
-				.replace(/\ /g, "_") +
-			".txt";
-
-		filenames.forEach((file) => {
-			console.log(file);
-			if (file.includes("logs")) {
-				fs.rename("/tmp/" + file, "/tmp/" + newFilename, () => {
-					return res.status(200).json({ filename: newFilename})
-				});
-			}
-		})
-
-		
-	}
 }
 
 module.exports = new AuthController();
