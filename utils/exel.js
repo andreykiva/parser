@@ -8,6 +8,10 @@ const saveProducts = (products, title) => {
 
 	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
 
+	const files = fs.readdirSync(path.join(__dirname, "..", "/tmp"));
+
+	console.log(files);
+
 	const file = reader.readFile(path.join(__dirname, "..", "/tmp", newFilename));
 
 	ws["!cols"] = [
