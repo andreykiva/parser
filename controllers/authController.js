@@ -106,6 +106,7 @@ class AuthController {
 				.replace(", ", "_")
 				.replace(/\./g, "_")
 				.replace(/\:/g, "_")
+				.replace(/\//g, "_")
 				.replace(/\ /g, "_") +
 			".txt";
 
