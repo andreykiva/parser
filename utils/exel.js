@@ -12,7 +12,7 @@ const saveProducts = async (products, title) => {
 	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
 
 	const workbook = new Excel.Workbook();
-	const worksheet = workbook.addWorksheet("Sheet1");
+	const worksheet = workbook.addWorksheet("Sheet2");
 
 	worksheet.columns = [
 		{ header: "Порядковый номер", key: "id", width: 17 },
