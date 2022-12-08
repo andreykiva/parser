@@ -24,8 +24,6 @@ const saveProducts = async (products, title) => {
 		{ header: "Дата", key: "date", width: 22 },
 	];
 
-	console.log(products);
-
 	products.forEach((product, index) => {
 		worksheet.addRow(product);
 		worksheet.getCell("F" + (index + 2)).value = { text: "Ссылка", hyperlink: product.link, tooltip: product.link.slice(8) };

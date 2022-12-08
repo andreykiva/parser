@@ -38,7 +38,7 @@ const parsePromPage = async (url) => {
 				price: price.includes(".")
 					? +price.slice(0, price.length / 2).replace(/ /g, "")
 					: +price.replace(/ /g, ""),
-				link: normalizeUrl("https://prom.ua/", link),
+				link: normalizeUrl("https://prom.ua", link),
 				date: today.toLocaleString(),
 			});
 		});
