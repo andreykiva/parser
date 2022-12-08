@@ -28,7 +28,7 @@ const saveProducts = async (products, title) => {
 
 	products.forEach((product, index) => {
 		worksheet.addRow(product);
-		worksheet.getCell("F" + (index + 2)).value = { text: "Ссылка", hyperlink: product.link };
+		worksheet.getCell("F" + (index + 2)).value = { text: "Ссылка", hyperlink: product.link, tooltip: product.link.slice(8) };
 	});
 
 	await workbook.xlsx.writeFile(path.join(__dirname, "..", "/tmp", newFilename));
