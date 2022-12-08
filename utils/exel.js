@@ -20,13 +20,14 @@ const saveProducts = async (products, title) => {
 		{ header: "Продавец", key: "seller", width: 40 },
 		{ header: "Наличие", key: "presence", width: 40 },
 		{ header: "Цена", key: "price", width: 15 },
-		{ header: "Ссылка на товар", key: "link", width: 70 },
+		{ header: "Ссылка на товар", key: "link", width: 18 },
 		{ header: "Дата", key: "date", width: 22 },
 	];
 
 	products.forEach((product, index) => {
 		worksheet.addRow(product);
 		worksheet.getCell("F" + (index + 2)).value = {
+			text: "Открыть",
 			hyperlink: product.link,
 			tooltip: product.link
 		};
