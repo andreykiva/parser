@@ -21,10 +21,6 @@ app.use(cors());
 app.use("/api", parseRouter);
 app.use("/api/auth", authRouter);
 
-process.env.SECRET = "SECRET_PARSE_KEY";
-process.env.MONGO_URI = "mongodb+srv://andrey:HIbsNe0SM2q6QC0x@cluster0-4mr6o.mongodb.net/prom-olx";
-
-
 cron.schedule("59 59 23 * * *", () => {
 	const directory = path.join(__dirname, "/tmp");
 
