@@ -1,32 +1,37 @@
 const fs = require("fs");
 const path = require("path");
-const reader = require("xlsx");
+const Excel = require("exceljs");
 
-const saveProducts = (products, title) => {
-	const ws = reader.utils.json_to_sheet(products);
-	const newFilename = title.replace(/ /g, '_') + "_" + new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") + ".xlsx";
+const saveProducts = async (products, title) => {
+	const newFilename =
+		title.replace(/ /g, "_") +
+		"_" +
+		new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") +
+		".xlsx";
 
 	fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
 
-	const file = reader.readFile(path.join(__dirname, "..", "/tmp", newFilename));
+	const workbook = new Excel.Workbook();
+	const worksheet = workbook.addWorksheet("Sheet1");
 
-	ws["!cols"] = [
-		{ wch: 17 },
-		{ wch: 100 },
-		{ wch: 40 },
-		{ wch: 40 },
-		{ wch: 15 },
-		{ wch: 70 },
-		{ wch: 22 },
+	worksheet.columns = [
+		{ header: "Порядковый номер", key: "id", width: 17 },
+		{ header: "Название", key: "name", width: 100 },
+		{ header: "Продавец", key: "seller", width: 40 },
+		{ header: "Наличие", key: "presence", width: 40 },
+		{ header: "Цена", key: "price", width: 15 },
+		{ header: "Ссылка на товар", key: "link", width: 18 },
+		{ header: "Дата", key: "date", width: 22 },
 	];
 
+	console.log(products);
+
 	products.forEach((product, index) => {
-		ws["F" + (index + 2)].l = { Target: product["Ссылка на товар"] };
+		worksheet.addRow(product);
+		worksheet.getCell("F" + (index + 2)).value = { text: "Ссылка", hyperlink: product.link };
 	});
 
-	reader.utils.book_append_sheet(file, ws, "Sheet2");
-
-	reader.writeFile(file, path.join(__dirname, "..", "/tmp", newFilename));
+	await workbook.xlsx.writeFile(path.join(__dirname, "..", "/tmp", newFilename));
 
 	return newFilename;
 };

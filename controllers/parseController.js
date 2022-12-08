@@ -35,13 +35,13 @@ class parseController {
 				products = olxProducts;
 			}
 
-			const sortedProducts = products.sort((a, b) => a["Цена"] - b["Цена"]);
+			const sortedProducts = products.sort((a, b) => a.price - b.price);
 
 			sortedProducts.forEach((item, index) => {
-				item["Порядковый номер"] = index + 1;
+				item.id = index + 1;
 			});
 
-			const filename = saveProducts(sortedProducts, title);
+			const filename = await saveProducts(sortedProducts, title);
 
 			return res.status(200).json({
 				filename,

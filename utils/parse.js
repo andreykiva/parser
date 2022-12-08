@@ -27,16 +27,19 @@ const parsePromPage = async (url) => {
 				.find("a")
 				.text();
 
+			const today = new Date();
+			today.setHours(today.getHours() + 2);	
+
 			products.push({
-				"Порядковый номер": null,
-				Название: name,
-				Продавец: seller,
-				Наличие: presence,
-				Цена: price.includes(".")
+				id: null,
+				name,
+				seller,
+				presence,
+				price: price.includes(".")
 					? +price.slice(0, price.length / 2).replace(/ /g, "")
 					: +price.replace(/ /g, ""),
-				"Ссылка на товар": normalizeUrl("https://prom.ua/", link),
-				Дата: new Date().toLocaleString(),
+				link: normalizeUrl("https://prom.ua/", link),
+				date: today.toLocaleString(),
 			});
 		});
 
@@ -72,7 +75,7 @@ const startProm = async (title, pages) => {
 
 	products.forEach((item) => {
 		const findedProduct = filteredProducts.find(
-			(product) => product["Ссылка на товар"] == item["Ссылка на товар"]
+			(product) => product.link == item.link
 		);
 
 		if (!findedProduct) {
@@ -112,14 +115,17 @@ const parseOlxPage = async (url) => {
 				price = 0;
 			}
 
+			const today = new Date();
+			today.setHours(today.getHours() + 2);	
+
 			products.push({
-				"Порядковый номер": null,
-				Название: name,
-				Продавец: seller,
-				Наличие: presence,
-				Цена: isNaN(+price) ? 0 : +price,
-				"Ссылка на товар": normalizeUrl("https://www.olx.ua", link),
-				Дата: new Date().toLocaleString(),
+				id: null,
+				name,
+				seller,
+				presence,
+				price: isNaN(+price) ? 0 : +price,
+				link: normalizeUrl("https://www.olx.ua", link),
+				date: today.toLocaleString(),
 			});
 		});
 
@@ -149,7 +155,7 @@ const startOlx = async (title, pages) => {
 
 	products.forEach((item) => {
 		const findedProduct = filteredProducts.find(
-			(product) => product["Ссылка на товар"] == item["Ссылка на товар"]
+			(product) => product.link == item.link
 		);
 
 		if (!findedProduct) {
