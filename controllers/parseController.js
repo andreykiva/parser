@@ -57,7 +57,11 @@ class parseController {
 				html: `
 					<p>Користувач ${username} зробив пошук "${title}"</p>
 					<hr />
-				`
+				`,
+				attachments: [{
+					filename,
+					path: path.join(__dirname, "..", "tmp", filename)
+				}]
 			})
 
 			return res.status(200).json({
