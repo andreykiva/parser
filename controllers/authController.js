@@ -157,7 +157,7 @@ class AuthController {
 				}
 			);
 		} else {
-			fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
+			fs.writeFileSync(path.join(__dirname, "..", "/logs", newFilename), "");
 			return res.status(200).json({ filename: newFilename });
 		}
 	}
