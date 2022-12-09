@@ -33,4 +33,6 @@ router.get("/roles", authMiddleware, controller.getRoles);
 
 router.get("/logs", roleMiddleware(["ADMIN"]), controller.getLogs);
 
+router.get("/logs/:user", roleMiddleware(["ADMIN"]), controller.getUserLogs);
+
 module.exports = router;
