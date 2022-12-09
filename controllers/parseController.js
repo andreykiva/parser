@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { startProm, startOlx } = require("../utils/parse");
 const { saveProducts } = require("../utils/exel");
+const telegram = require("../utils/telegram");
 
 class parseController {
 	async parseProducts(req, res) {
@@ -12,12 +13,14 @@ class parseController {
 			const files = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 
 			const today = new Date();
-			today.setHours(today.getHours() + 2);	
+			today.setHours(today.getHours() + 2);
 
 			fs.appendFileSync(
 				path.join(__dirname, "..", "/logs", files[0]),
 				`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
 			);
+
+			await telegram.sendMessage(process.env.ADMIN_ID, `Користувач ${username} зробив пошук "${title}"`);
 
 			if (prom && olx) {
 				const listOfPromises = [];
