@@ -27,7 +27,7 @@ const saveProducts = async (products, title) => {
 	products.forEach((product, index) => {
 		worksheet.addRow(product);
 		worksheet.getCell("F" + (index + 2)).value = {
-			text: "Открыть",
+			text: product.link,
 			hyperlink: product.link,
 			tooltip: product.link
 		};
