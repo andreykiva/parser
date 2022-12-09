@@ -20,6 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.4",
     "node-cron": "^3.0.2",
+    "nodemailer": "^6.8.0",
     "telegraf": "^4.11.2",
     "write-excel-file": "^1.4.15"
   },

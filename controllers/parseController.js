@@ -3,6 +3,7 @@ const path = require("path");
 const { startProm, startOlx } = require("../utils/parse");
 const { saveProducts } = require("../utils/exel");
 const telegram = require("../utils/telegram");
+const mailTransporter = require("../utils/email");
 
 class parseController {
 	async parseProducts(req, res) {
@@ -20,7 +21,10 @@ class parseController {
 				`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
 			);
 
-			await telegram.sendMessage(process.env.ADMIN_ID, `Користувач ${username} зробив пошук "${title}"`);
+			await telegram.sendMessage(
+				process.env.ADMIN_ID,
+				`Користувач ${username} зробив пошук "${title}"`
+			);
 
 			if (prom && olx) {
 				const listOfPromises = [];
@@ -45,6 +49,21 @@ class parseController {
 			});
 
 			const filename = await saveProducts(sortedProducts, title);
+
+			let mailDetails = {
+				from: process.env.SENDER_EMAIL,
+				to: process.env.RECEIVER_EMAIL,
+				subject: `${username} | "${title}"`,
+				text: `Користувач ${username} зробив пошук "${title}"`,
+			};
+
+			mailTransporter.sendMail(mailDetails, (err) => {
+				if (err) {
+					console.log("Error Occurs");
+				} else {
+					console.log("Email sent successfully");
+				}
+			});
 
 			return res.status(200).json({
 				filename,
