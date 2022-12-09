@@ -12,6 +12,21 @@ const generateAccessToken = (id, roles) => {
 	return jwt.sign(payload, process.env.SECRET, { expiresIn: "24h" });
 };
 
+const createLogFile = (name) => {
+	const newFilename =
+		name +
+		new Date()
+			.toLocaleString()
+			.replace(", ", "_")
+			.replace(/\./g, "_")
+			.replace(/\:/g, "_")
+			.replace(/\//g, "_")
+			.replace(/\ /g, "_") +
+		".txt";
+
+	return newFilename;
+};
+
 class AuthController {
 	async registration(req, res) {
 		try {
@@ -99,24 +114,44 @@ class AuthController {
 	getLogs(req, res) {
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 
-		const newFilename =
-			"logs_" +
-			new Date()
-				.toLocaleString()
-				.replace(", ", "_")
-				.replace(/\./g, "_")
-				.replace(/\:/g, "_")
-				.replace(/\//g, "_")
-				.replace(/\ /g, "_") +
-			".txt";
+		const newFilename = createLogFile("logs_");
 
-		fs.rename(
-			path.join(__dirname, "..", "/logs", filenames[0]),
-			path.join(__dirname, "..", "/logs", newFilename),
-			() => {
-				return res.status(200).json({ filename: newFilename });
+		filenames.forEach((file) => {
+			if (file.includes("logs")) {
+				fs.rename(
+					path.join(__dirname, "..", "/logs", file),
+					path.join(__dirname, "..", "/logs", newFilename),
+					() => {
+						return res.status(200).json({ filename: newFilename });
+					}
+				);
 			}
-		);
+		});
+
+		return res.status(200).json({ filename: newFilename });
+	}
+
+	getUserLogs(req, res) {
+		const user = req.params.login;
+
+		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
+		const newFilename = createLogFile(user + "_");
+
+		filenames.forEach((file) => {
+			if (file.includes(user)) {
+				fs.rename(
+					path.join(__dirname, "..", "/logs", file),
+					path.join(__dirname, "..", "/logs", newFilename),
+					() => {
+						return res.status(200).json({ filename: newFilename });
+					}
+				);
+			}
+		});
+
+		fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
+		
+		return res.status(200).json({ filename: newFilename });
 	}
 }
 

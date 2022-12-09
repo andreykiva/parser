@@ -5,6 +5,13 @@ const { startProm, startOlx } = require("../utils/parse");
 const { saveProducts } = require("../utils/exel");
 const telegram = require("../utils/telegram");
 
+const appendToLogfile = (file, username, title, today) => {
+	fs.appendFileSync(
+		path.join(__dirname, "..", "/logs", file),
+		`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
+	);
+};
+
 class parseController {
 	async parseProducts(req, res) {
 		try {
@@ -16,10 +23,15 @@ class parseController {
 			const today = new Date();
 			today.setHours(today.getHours() + 2);
 
-			fs.appendFileSync(
-				path.join(__dirname, "..", "/logs", files[0]),
-				`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
-			);
+			files.forEach((file) => {
+				if (file.includes("logs")) {
+					appendToLogfile(file, username, title, today);
+				}
+
+				if (file.includes(username)) {
+					appendToLogfile(file, username, title, today);
+				}
+			});
 
 			await telegram.sendMessage(
 				process.env.ADMIN_ID,
@@ -58,11 +70,13 @@ class parseController {
 					<p>Користувач ${username} зробив пошук "${title}"</p>
 					<hr />
 				`,
-				attachments: [{
-					filename,
-					path: path.join(__dirname, "..", "tmp", filename)
-				}]
-			})
+				attachments: [
+					{
+						filename,
+						path: path.join(__dirname, "..", "tmp", filename),
+					},
+				],
+			});
 
 			return res.status(200).json({
 				filename,
