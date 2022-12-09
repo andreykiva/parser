@@ -133,7 +133,7 @@ class AuthController {
 	}
 
 	getUserLogs(req, res) {
-		const user = req.params.login;
+		const user = req.params.user;
 
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 		const newFilename = createLogFile(user + "_");
