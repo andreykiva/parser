@@ -115,20 +115,21 @@ class AuthController {
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 
 		const newFilename = createLogFile("logs_");
+		let index = null;
 
-		filenames.forEach((file) => {
+		filenames.forEach((file, i) => {
 			if (file.includes("logs")) {
-				fs.rename(
-					path.join(__dirname, "..", "/logs", file),
-					path.join(__dirname, "..", "/logs", newFilename),
-					() => {
-						return res.status(200).json({ filename: newFilename });
-					}
-				);
+				index = i;
 			}
 		});
 
-		return res.status(200).json({ filename: newFilename });
+		fs.rename(
+			path.join(__dirname, "..", "/logs", filenames[index]),
+			path.join(__dirname, "..", "/logs", newFilename),
+			() => {
+				return res.status(200).json({ filename: newFilename });
+			}
+		);
 	}
 
 	getUserLogs(req, res) {
@@ -137,21 +138,28 @@ class AuthController {
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 		const newFilename = createLogFile(user + "_");
 
-		filenames.forEach((file) => {
+		let includes = false;
+		let index = null;
+
+		filenames.forEach((file, i) => {
 			if (file.includes(user)) {
-				fs.rename(
-					path.join(__dirname, "..", "/logs", file),
-					path.join(__dirname, "..", "/logs", newFilename),
-					() => {
-						return res.status(200).json({ filename: newFilename });
-					}
-				);
+				includes = true;
+				index = i;
 			}
 		});
 
-		fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
-		
-		return res.status(200).json({ filename: newFilename });
+		if (includes) {
+			fs.rename(
+				path.join(__dirname, "..", "/logs", filenames[index]),
+				path.join(__dirname, "..", "/logs", newFilename),
+				() => {
+					return res.status(200).json({ filename: newFilename });
+				}
+			);
+		} else {
+			fs.writeFileSync(path.join(__dirname, "..", "/tmp", newFilename), "");
+			return res.status(200).json({ filename: newFilename });
+		}
 	}
 }
 
