@@ -5,6 +5,7 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Role = require("../models/Role");
+const Log = require("../models/Log");
 
 const generateAccessToken = (id, roles) => {
 	const payload = { id, roles };
@@ -113,7 +114,9 @@ class AuthController {
 		return res.json({ roles });
 	}
 
-	getLogs(req, res) {
+	async getLogs(req, res) {
+		const logs = await Log.find();
+
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 
 		const newFilename = createLogFile("logs_");
@@ -125,6 +128,15 @@ class AuthController {
 			}
 		});
 
+		fs.writeFileSync(path.join(__dirname, "..", "/logs", filenames[index]), "");
+
+		logs.forEach((log) => {
+			fs.appendFileSync(
+				path.join(__dirname, "..", "/logs", filenames[index]),
+				log.text + "\n"
+			);
+		});
+
 		fs.rename(
 			path.join(__dirname, "..", "/logs", filenames[index]),
 			path.join(__dirname, "..", "/logs", newFilename),
@@ -134,8 +146,10 @@ class AuthController {
 		);
 	}
 
-	getUserLogs(req, res) {
+	async getUserLogs(req, res) {
 		const user = req.params.user;
+
+		const logs = await Log.find({ user });
 
 		const filenames = fs.readdirSync(path.join(__dirname, "..", "/logs"));
 		const newFilename = createLogFile(user + "_");
@@ -150,7 +164,16 @@ class AuthController {
 			}
 		});
 
+		fs.writeFileSync(path.join(__dirname, "..", "/logs", filenames[index]), "");
+
 		if (includes) {
+			logs.forEach((log) => {
+				fs.appendFileSync(
+					path.join(__dirname, "..", "/logs", filenames[index]),
+					log.text + "\n"
+				);
+			});
+
 			fs.rename(
 				path.join(__dirname, "..", "/logs", filenames[index]),
 				path.join(__dirname, "..", "/logs", newFilename),
@@ -160,6 +183,14 @@ class AuthController {
 			);
 		} else {
 			fs.writeFileSync(path.join(__dirname, "..", "/logs", newFilename), "");
+
+			logs.forEach((log) => {
+				fs.appendFileSync(
+					path.join(__dirname, "..", "/logs", newFilename),
+					log.text + "\n"
+				);
+			});
+
 			return res.status(200).json({ filename: newFilename });
 		}
 	}

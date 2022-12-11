@@ -1,16 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const transporter = require("../utils/email");
+const Log = require("../models/Log");
 const { startProm, startOlx } = require("../utils/parse");
 const { saveProducts } = require("../utils/exel");
 const telegram = require("../utils/telegram");
-
-const appendToLogfile = (file, username, title, today) => {
-	fs.appendFileSync(
-		path.join(__dirname, "..", "/logs", file),
-		`Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}\n`
-	);
-};
 
 class parseController {
 	async parseProducts(req, res) {
@@ -18,20 +12,15 @@ class parseController {
 			const { title, promPages, olxPages, username, prom, olx } = req.body;
 			let products = [];
 
-			const files = fs.readdirSync(path.join(__dirname, "..", "/logs"));
-
 			const today = new Date();
 			today.setHours(today.getHours() + 2);
 
-			files.forEach((file) => {
-				if (file.includes("logs")) {
-					appendToLogfile(file, username, title, today);
-				}
-
-				if (file.includes(username)) {
-					appendToLogfile(file, username, title, today);
-				}
+			const log = new Log({
+				text: `Користувач ${username} зробив пошук "${title}" | ${today.toLocaleString()}`,
+				user: username
 			});
+
+			await log.save();
 
 			await telegram.sendMessage(
 				process.env.ADMIN_ID,
