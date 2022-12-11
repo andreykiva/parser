@@ -164,9 +164,9 @@ class AuthController {
 			}
 		});
 
-		fs.writeFileSync(path.join(__dirname, "..", "/logs", filenames[index]), "");
-
 		if (includes) {
+			fs.writeFileSync(path.join(__dirname, "..", "/logs", filenames[index]), "");
+
 			logs.forEach((log) => {
 				fs.appendFileSync(
 					path.join(__dirname, "..", "/logs", filenames[index]),
