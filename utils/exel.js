@@ -4,8 +4,10 @@ const Excel = require("exceljs");
 
 const saveProducts = async (products, title, username) => {
 	const newFilename =
+		username +
+		"_" +
 		title.replace(/ /g, "_") +
-		"_" + username + "_" +
+		"_" +
 		new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") +
 		".xlsx";
 
@@ -29,7 +31,7 @@ const saveProducts = async (products, title, username) => {
 		worksheet.getCell("F" + (index + 2)).value = {
 			text: product.link,
 			hyperlink: product.link,
-			tooltip: product.link
+			tooltip: product.link,
 		};
 	});
 
