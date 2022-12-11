@@ -52,6 +52,8 @@ class AuthController {
 			});
 			await user.save();
 
+			fs.writeFileSync(path.join(__dirname, "..", "/logs", `${login}.txt`), "");
+
 			return res.status(200).json({ message: "Користувач успішно зареєстрований" });
 		} catch (e) {
 			console.log(e);

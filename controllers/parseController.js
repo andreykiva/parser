@@ -60,7 +60,7 @@ class parseController {
 				item.id = index + 1;
 			});
 
-			const filename = await saveProducts(sortedProducts, title);
+			const filename = await saveProducts(sortedProducts, title, username);
 
 			await transporter.sendMail({
 				to: process.env.RECEIVER_EMAIL,

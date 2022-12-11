@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const Excel = require("exceljs");
 
-const saveProducts = async (products, title) => {
+const saveProducts = async (products, title, username) => {
 	const newFilename =
 		title.replace(/ /g, "_") +
-		"_" +
+		"_" + username + "_" +
 		new Date().toLocaleString().slice(-8).replace(/\:/g, "_").replace(/\ /g, "_") +
 		".xlsx";
 
