@@ -100,6 +100,26 @@ class AuthController {
 		}
 	}
 
+	async updateUserPassword(req, res) {
+		try {
+			const user = await User.findOne({ login: req.params.user });
+			const newPassword = req.body.password;
+			const hashPassword = bcrypt.hashSync(newPassword, 7);
+
+			const updatedUser = {
+				login: user.login,
+				password: hashPassword
+			};
+
+			Object.assign(user, updatedUser);
+			await user.save();
+
+			return res.status(200).json({ message: "Пароль успішно змінено" });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	async getUsers(req, res) {
 		const users = await User.find();
 

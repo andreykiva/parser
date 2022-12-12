@@ -24,6 +24,7 @@ const saveProducts = async (products, title, username) => {
 		{ header: "Цена", key: "price", width: 15 },
 		{ header: "Ссылка на товар", key: "link", width: 18 },
 		{ header: "Дата", key: "date", width: 22 },
+		{ header: "Примечания менеджера", key: "notes", width: 70 },
 	];
 
 	products.forEach((product, index) => {

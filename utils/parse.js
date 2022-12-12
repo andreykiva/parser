@@ -28,7 +28,7 @@ const parsePromPage = async (url) => {
 				.text();
 
 			const today = new Date();
-			today.setHours(today.getHours() + 2);	
+			today.setHours(today.getHours() + 2);
 
 			products.push({
 				id: null,
@@ -40,6 +40,7 @@ const parsePromPage = async (url) => {
 					: +price.replace(/ /g, ""),
 				link: normalizeUrl("https://prom.ua", link),
 				date: today.toLocaleString(),
+				notes: "",
 			});
 		});
 
@@ -103,20 +104,23 @@ const parseOlxPage = async (url) => {
 			const seller = "";
 
 			if (price.text()) {
-				const trimmedPrice = price.text().slice(0, price.text().indexOf("грн.")).slice(-15);
+				const trimmedPrice = price
+					.text()
+					.slice(0, price.text().indexOf("грн."))
+					.slice(-15);
 				const index = trimmedPrice.indexOf(";}");
 
 				if (index != -1) {
-					price = trimmedPrice.slice(index + 2).replace(/ /g,"");
+					price = trimmedPrice.slice(index + 2).replace(/ /g, "");
 				} else {
-					price = trimmedPrice.replace(/ /g,"");
+					price = trimmedPrice.replace(/ /g, "");
 				}
 			} else {
 				price = 0;
 			}
 
 			const today = new Date();
-			today.setHours(today.getHours() + 2);	
+			today.setHours(today.getHours() + 2);
 
 			products.push({
 				id: null,
@@ -126,6 +130,7 @@ const parseOlxPage = async (url) => {
 				price: isNaN(+price) ? 0 : +price,
 				link: normalizeUrl("https://www.olx.ua", link),
 				date: today.toLocaleString(),
+				notes: "",
 			});
 		});
 

@@ -27,6 +27,13 @@ router.delete(
 	controller.removeUser
 );
 
+router.put(
+	"/update/:user",
+	[check("password", "Пароль повинен бути білше 3").isLength({ min: 4 })],
+	roleMiddleware(["ADMIN"]),
+	controller.updateUserPassword
+);
+
 router.get("/users", roleMiddleware(["ADMIN"]), controller.getUsers);
 
 router.get("/roles", authMiddleware, controller.getRoles);
